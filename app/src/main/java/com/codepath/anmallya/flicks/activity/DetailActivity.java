@@ -36,18 +36,11 @@ public class DetailActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
 
         final Movie movie = (Movie)getIntent().getSerializableExtra("MOVIE");
-
         RatingBar ratingBar = (RatingBar)findViewById(R.id.rating_bar);
-
         int numberOfStars = ((int)(movie.getVoteAverage()/2) == 0)? 1: (int)(movie.getVoteAverage()/2);
-
         ratingBar.setNumStars(numberOfStars);
-
 
         System.out.println("Number of stars: "+(int)(movie.getVoteAverage()/2));
 

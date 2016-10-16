@@ -1,5 +1,6 @@
 package com.codepath.anmallya.flicks.activity;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class MoviesActivity extends AppCompatActivity {
     ArrayList<Movie> movieList = null;
     MovieArrayAdapter movieAdapter;
     ListView lvMovies;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,14 @@ public class MoviesActivity extends AppCompatActivity {
         movieAdapter = new MovieArrayAdapter(this , movieList);
         lvMovies.setAdapter(movieAdapter);
         fetchMovies();
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchMovies();
+            }
+        });
     }
 
 
@@ -54,8 +64,13 @@ public class MoviesActivity extends AppCompatActivity {
                    MovieList movieListNew = (new ObjectMapper()).readValue(response.toString(), MovieList.class);
                    System.out.println(movieListNew.getResults().get(0).getOverview());
                    System.out.println(movieListNew.getResults().get(1).getOverview());
-                   movieList.addAll(movieListNew.getResults());
+                   //movieList.addAll(movieListNew.getResults());
+                   addAll(movieListNew);
+
                    movieAdapter.notifyDataSetChanged();
+                   if(swipeRefreshLayout != null){
+                        swipeRefreshLayout.setRefreshing(false);
+                   }
                } catch (IOException e) {
                    e.printStackTrace();
                }
@@ -68,4 +83,23 @@ public class MoviesActivity extends AppCompatActivity {
 
        });
    }
+
+    // helps to add movies to the list
+    // helps to avoid duplication of movies during swipe to refresh.
+
+    private void addAll(MovieList newMovieList){
+        ArrayList<Movie> movieListNew = newMovieList.getResults();
+        if(movieList.size() == 0){
+            movieList.addAll(movieListNew);
+            return;
+        }
+        Movie first = movieList.get(0);
+
+        for(Movie movie:movieListNew){
+            if(movie.getId() == first.getId()){
+                break;
+            }
+            movieList.add(0, movie);
+        }
+    }
 }

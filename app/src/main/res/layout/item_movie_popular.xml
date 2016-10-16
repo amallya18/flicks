@@ -18,7 +18,7 @@
         android:layout_alignParentBottom="true" />
 
     <ImageView
-        android:src="@drawable/playoverlay"
+        android:src="@drawable/play_button_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/play_button"
