@@ -23,10 +23,7 @@
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
         android:fitsSystemWindows="true"
         app:contentScrim="?attr/colorPrimary"
-        app:titleEnabled="false"
-        >
-
-
+        app:titleEnabled="false">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -47,12 +44,7 @@
                     android:layout_height="80dp"
                     android:src="@drawable/play_button_new"
                     />
-
             </RelativeLayout>
-
-
-
-
     </android.support.design.widget.CollapsingToolbarLayout>
 </android.support.design.widget.AppBarLayout>
 
@@ -73,15 +65,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
-            android:paddingLeft="25dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:textSize="25dp"
             android:textColor="#000000"
             android:ellipsize="end"
-            android:lines = "1"/>
+            android:maxLines="2"/>
             <TextView
                 android:paddingTop="10dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:textSize="15dp"
                 android:layout_below="@id/tv_title"
                 android:layout_alignParentRight="true"
@@ -91,10 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:lines = "5"/>
-
-
-
+                android:maxLines = "5"/>
     <ImageView
         tools:src="@mipmap/ic_launcher"
         android:layout_width="wrap_content"
@@ -118,6 +108,7 @@
         android:layout_height="wrap_content"
         android:numStars="5"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
         android:stepSize="0.5" />
 
         <TextView
@@ -126,7 +117,7 @@
             android:layout_toRightOf="@id/iv_movie_image"
             android:id="@+id/tv_popularity"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -137,7 +128,31 @@
             android:textSize="15dp"
             android:layout_below="@id/tv_popularity"
             android:id="@+id/tv_vote_count"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines = "1"/>
+
+        <TextView
+            android:layout_toRightOf="@id/iv_movie_image"
+            android:textSize="15dp"
+            android:layout_below="@id/tv_vote_count"
+            android:id="@+id/tv_release_date"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines = "1"/>
+
+        <TextView
+            android:layout_toRightOf="@id/iv_movie_image"
+            android:textSize="15dp"
+            android:layout_below="@id/tv_release_date"
+            android:id="@+id/tv_language"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -176,11 +191,8 @@
             android:layout_toRightOf="@id/iv_play_button"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="Play Trailer"
+            android:text="Play Teaser"
             android:gravity="left" />
-
-
-
 
         <FrameLayout
             android:layout_marginTop="10dp"

@@ -18,24 +18,30 @@ import com.codepath.anmallya.flicks.model.Movie;
 import com.codepath.anmallya.flicks.model.MovieList;
 import com.codepath.anmallya.flicks.model.Trailer;
 import com.codepath.anmallya.flicks.model.TrailerList;
+import com.codepath.anmallya.flicks.utils.Constants;
 import com.codepath.anmallya.flicks.utils.Url;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by anmallya on 10/15/2016.
  */
 public class MovieArrayAdapter extends ArrayAdapter<Movie>{
     ArrayList<Movie> movieList;
-
     private Context mContext;
 
     public MovieArrayAdapter(Context context, ArrayList<Movie> movieList)
@@ -44,7 +50,6 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
         this.movieList = movieList;
         mContext = context;
     }
-
 
     @Override
     public int getViewTypeCount() {
@@ -74,7 +79,6 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
         ViewHolderPopular viewHolderPopular;
 
         if(convertView == null){
-
             if(movie.isPopular()){
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(R.layout.item_movie_popular, parent, false);
@@ -102,9 +106,21 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
             ivImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    displayVideo(((Movie)v.getTag()).getId());
+                    displayVideoOkHttp(((Movie)v.getTag()).getId());
                 }
             });
+
+            ivImage.setOnLongClickListener(new View.OnLongClickListener() {
+                       @Override
+                       public boolean onLongClick(View v) {
+                           Intent intent = new Intent(getContext(), DetailActivity.class);
+                           intent.putExtra(Constants.MOVIE_INFO, (Movie)v.getTag());
+                           getContext().startActivity(intent);
+                           return true;
+                       }
+                   }
+            );
+
         } else{
             viewHolder = (ViewHolder) convertView.getTag();
             ImageView ivImage = viewHolder.ivImage;
@@ -113,7 +129,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
-                    intent.putExtra("MOVIE", (Movie)v.getTag());
+                    intent.putExtra(Constants.MOVIE_INFO, (Movie)v.getTag());
                     getContext().startActivity(intent);
                 }
             });
@@ -130,7 +146,6 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
 
             TextView tvOverview = viewHolder.tvOverview;
             tvOverview.setText(movie.getOverview());
-
         }
         return convertView;
     }
@@ -143,13 +158,12 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                JSONArray TrailerArray = null;
                 try {
                     TrailerList trailerList = (new ObjectMapper()).readValue(response.toString(), TrailerList.class);
                     Trailer trailer = trailerList.getResults().get(0);
 
                     Intent intent = new Intent(getContext(), YoutubeActivity.class);
-                    intent.putExtra("YOUTUBE_VIDEO_KEY", trailer.getKey());
+                    intent.putExtra(Constants.YOUTUBE_VIDEO_KEY, trailer.getKey());
                     getContext().startActivity(intent);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -164,4 +178,38 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
         });
     }
 
+
+    private void displayVideoOkHttp(int id){
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(Url.getTrailerUrl(String.valueOf(id)))
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                    try {
+                        String responseData = response.body().string();
+                        JSONObject json = new JSONObject(responseData);
+
+                        TrailerList trailerList = (new ObjectMapper()).readValue(json.toString(), TrailerList.class);
+                        Trailer trailer = trailerList.getResults().get(0);
+
+                        Intent intent = new Intent(getContext(), YoutubeActivity.class);
+                        intent.putExtra(Constants.YOUTUBE_VIDEO_KEY, trailer.getKey());
+                        getContext().startActivity(intent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
