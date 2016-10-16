@@ -1,10 +1,11 @@
-package com.codepath.anmallya.flicks;
+package com.codepath.anmallya.flicks.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
+import com.codepath.anmallya.flicks.R;
 import com.codepath.anmallya.flicks.adapter.MovieArrayAdapter;
 import com.codepath.anmallya.flicks.model.Movie;
 import com.codepath.anmallya.flicks.model.MovieList;
@@ -32,6 +33,7 @@ public class MoviesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
+        getSupportActionBar().hide();
         lvMovies = (ListView) findViewById(R.id.lv_movie);
         movieList = new ArrayList<Movie>();
         movieAdapter = new MovieArrayAdapter(this , movieList);

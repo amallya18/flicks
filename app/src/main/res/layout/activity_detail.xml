@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/background_light"
+    android:fitsSystemWindows="true">
+
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/main.appbar"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:fitsSystemWindows="true"
+    >
+
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/main.collapsing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        android:fitsSystemWindows="true"
+        app:contentScrim="?attr/colorPrimary"
+        app:titleEnabled="false"
+        >
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id ="@+id/iv_backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"
+                    />
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:id ="@+id/iv_play_button_small"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/play_button"
+                    />
+
+            </RelativeLayout>
+
+
+
+
+    </android.support.design.widget.CollapsingToolbarLayout>
+</android.support.design.widget.AppBarLayout>
+
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingLeft="25dp"
+            android:textSize="25dp"
+            android:textColor="#000000"
+            android:ellipsize="end"
+            android:lines = "1"/>
+            <TextView
+                android:paddingTop="10dp"
+                android:paddingLeft="25dp"
+                android:paddingRight="10dp"
+                android:textSize="15dp"
+                android:layout_below="@id/tv_title"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/tv_overview"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines = "5"/>
+
+
+
+    <ImageView
+        tools:src="@mipmap/ic_launcher"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/iv_movie_image"
+        android:layout_below="@id/tv_overview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+        <RatingBar
+            android:progressTint="@android:color/holo_red_dark"
+            android:progressBackgroundTint="@android:color/holo_red_dark"
+            android:secondaryProgressTint="@android:color/holo_red_dark"
+            android:layout_toRightOf="@id/iv_movie_image"
+        android:id="@+id/rating_bar"
+        android:layout_below="@id/tv_overview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+            android:layout_marginTop="10dp"
+        android:stepSize="0.5" />
+
+        <TextView
+            android:textSize="15dp"
+            android:layout_below="@id/rating_bar"
+            android:layout_toRightOf="@id/iv_movie_image"
+            android:id="@+id/tv_popularity"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines = "1"/>
+
+        <TextView
+            android:layout_toRightOf="@id/iv_movie_image"
+            android:textSize="15dp"
+            android:layout_below="@id/tv_popularity"
+            android:id="@+id/tv_vote_count"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines = "1"/>
+        <FrameLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee"
+            android:id="@+id/line"
+            android:layout_below="@id/iv_movie_image"></FrameLayout>
+
+        <ImageView
+            tools:src="@mipmap/ic_launcher"
+            android:src="@drawable/playbutton"
+            android:layout_marginTop="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/iv_play_button"
+            android:layout_below="@id/line"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:background="#ffffff"
+            android:layout_alignBaseline="@id/iv_play_button"
+            android:textSize="14sp"
+            android:layout_below="@id/line"
+            android:id="@+id/btn_play_trailer"
+            android:layout_marginTop="14dp"
+            android:layout_marginLeft="20dp"
+            android:textAllCaps="false"
+            android:layout_toRightOf="@id/iv_play_button"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Play Trailer"
+            android:gravity="left" />
+
+
+
+
+        <FrameLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee"
+            android:layout_below="@id/iv_play_button"></FrameLayout>
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

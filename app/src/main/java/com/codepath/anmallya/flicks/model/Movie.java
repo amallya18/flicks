@@ -3,12 +3,13 @@ package com.codepath.anmallya.flicks.model;
 import com.codepath.anmallya.flicks.utils.Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by anmallya on 10/15/2016.
  */
-public class Movie {
+public class Movie implements Serializable{
 
     public Movie(){
 
@@ -27,6 +28,12 @@ public class Movie {
     private int voteCount;
     private boolean isVideo;
 
+    public boolean isPopular() {
+        return isPopular;
+    }
+
+    private boolean isPopular;
+
     @JsonProperty("genre_ids")
     public List<Integer> getGenre_ids() {
         return genre_ids;
@@ -44,7 +51,9 @@ public class Movie {
     }
 
     public void setVoteAverage(float voteAverage) {
+
         this.voteAverage = voteAverage;
+        isPopular = voteAverage > 5 ? true: false;
     }
 
     private float voteAverage;
