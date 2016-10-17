@@ -12,7 +12,6 @@ import java.util.List;
 public class Movie implements Serializable{
 
     public Movie(){
-
     }
 
     private String posterPath;
@@ -27,12 +26,13 @@ public class Movie implements Serializable{
     private float popularity;
     private int voteCount;
     private boolean isVideo;
+    private boolean isPopular;
+    private List<Integer> genre_ids;
+    private float voteAverage;
 
     public boolean isPopular() {
         return isPopular;
     }
-
-    private boolean isPopular;
 
     @JsonProperty("genre_ids")
     public List<Integer> getGenre_ids() {
@@ -42,8 +42,6 @@ public class Movie implements Serializable{
     public void setGenre_ids(List<Integer> genre_ids) {
         this.genre_ids = genre_ids;
     }
-
-    private List<Integer> genre_ids;
 
     @JsonProperty("vote_average")
     public float getVoteAverage() {
@@ -55,8 +53,6 @@ public class Movie implements Serializable{
         this.voteAverage = voteAverage;
         isPopular = voteAverage > 5 ? true: false;
     }
-
-    private float voteAverage;
 
     @JsonProperty("poster_path")
     public String getPosterPath() {

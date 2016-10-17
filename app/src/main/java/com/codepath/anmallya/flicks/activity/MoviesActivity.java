@@ -3,6 +3,7 @@ package com.codepath.anmallya.flicks.activity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -35,8 +36,8 @@ import okhttp3.Response;
 
 public class MoviesActivity extends AppCompatActivity {
 
-    ArrayList<Movie> movieList = null;
-    MovieArrayAdapter movieAdapter;
+    private ArrayList<Movie> movieList = null;
+    private MovieArrayAdapter movieAdapter;
 
     @BindView(R.id.lv_movie) ListView lvMovies;
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swipeRefreshLayout;
@@ -45,7 +46,8 @@ public class MoviesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
-        getSupportActionBar().setTitle("Flickster");
+        getSupportActionBar().setTitle((Html.fromHtml("<font color=\"#222222\">" + getString(R.string.app_name)+ "</font>")));
+        getSupportActionBar().setElevation(10);
         ButterKnife.bind(this);
         movieList = new ArrayList<Movie>();
         movieAdapter = new MovieArrayAdapter(this , movieList);
@@ -59,22 +61,16 @@ public class MoviesActivity extends AppCompatActivity {
         });
     }
 
-
-   private void fetchMovies(){
+   // Currently not used
+   private void fetchMoviesAndroidAsyncHttp(){
        AsyncHttpClient client = new AsyncHttpClient();
        client.get(Url.getNowPlaying(), new JsonHttpResponseHandler(){
-
            @Override
            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                super.onSuccess(statusCode, headers, response);
-               JSONArray movieJsonArray = null;
                try {
                    MovieList movieListNew = (new ObjectMapper()).readValue(response.toString(), MovieList.class);
-                   System.out.println(movieListNew.getResults().get(0).getOverview());
-                   System.out.println(movieListNew.getResults().get(1).getOverview());
-                   //movieList.addAll(movieListNew.getResults());
                    addAll(movieListNew);
-
                    movieAdapter.notifyDataSetChanged();
                    if(swipeRefreshLayout != null){
                         swipeRefreshLayout.setRefreshing(false);
@@ -83,24 +79,20 @@ public class MoviesActivity extends AppCompatActivity {
                    e.printStackTrace();
                }
            }
-
            @Override
            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
                super.onFailure(statusCode, headers, responseString, throwable);
            }
-
        });
    }
 
-
+    // Currently used
     private void fetchMoviesOkHttp(){
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url(Url.getNowPlaying())
                 .build();
         client.newCall(request).enqueue(new Callback() {
-
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -112,10 +104,7 @@ public class MoviesActivity extends AppCompatActivity {
                     String responseData = response.body().string();
                     JSONObject json = new JSONObject(responseData);
                     MovieList movieListNew = (new ObjectMapper()).readValue(json.toString(), MovieList.class);
-                    System.out.println(movieListNew.getResults().get(0).getOverview());
-                    System.out.println(movieListNew.getResults().get(1).getOverview());
                     addAll(movieListNew);
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

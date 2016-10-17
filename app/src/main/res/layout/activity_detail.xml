@@ -27,7 +27,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <ImageView
                     android:id ="@+id/iv_backdrop"
                     android:layout_width="match_parent"
@@ -53,11 +52,10 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
+            <TextView
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
@@ -72,44 +70,44 @@
             android:ellipsize="end"
             android:maxLines="2"/>
             <TextView
-                android:paddingTop="10dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textSize="15dp"
-                android:layout_below="@id/tv_title"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentLeft="true"
-                android:id="@+id/tv_overview"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines = "5"/>
-    <ImageView
-        tools:src="@mipmap/ic_launcher"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:layout_marginLeft="10dp"
-        android:id="@+id/iv_movie_image"
-        android:layout_below="@id/tv_overview"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textSize="15dp"
+            android:layout_below="@id/tv_title"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/tv_overview"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines = "5"/>
+            <ImageView
+            tools:src="@mipmap/ic_launcher"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/iv_movie_image"
+            android:layout_below="@id/tv_overview"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <RatingBar
             android:progressTint="@android:color/holo_red_dark"
             android:progressBackgroundTint="@android:color/holo_red_dark"
             android:secondaryProgressTint="@android:color/holo_red_dark"
             android:layout_toRightOf="@id/iv_movie_image"
-        android:id="@+id/rating_bar"
-        android:layout_below="@id/tv_overview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
+            android:id="@+id/rating_bar"
+            android:layout_below="@id/tv_overview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="15dp"
-        android:stepSize="0.5" />
+            android:stepSize="0.5" />
 
         <TextView
             android:textSize="15dp"
@@ -162,7 +160,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#eeeeee"
+            android:background="@color/line_color_grey"
             android:id="@+id/line"
             android:layout_below="@id/iv_movie_image"></FrameLayout>
 
@@ -191,17 +189,15 @@
             android:layout_toRightOf="@id/iv_play_button"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="Play Teaser"
+            android:text="@string/play_teaser"
             android:gravity="left" />
 
         <FrameLayout
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#eeeeee"
+            android:background="@color/line_color_grey"
             android:layout_below="@id/iv_play_button"></FrameLayout>
-
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
-
 </android.support.design.widget.CoordinatorLayout>

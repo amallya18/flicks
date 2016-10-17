@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.anmallya.flicks.HttpHelper;
 import com.codepath.anmallya.flicks.R;
 import com.codepath.anmallya.flicks.activity.DetailActivity;
+import com.codepath.anmallya.flicks.activity.MoviesActivity;
 import com.codepath.anmallya.flicks.activity.YoutubeActivity;
 import com.codepath.anmallya.flicks.model.Movie;
 import com.codepath.anmallya.flicks.model.MovieList;
@@ -41,7 +43,7 @@ import okhttp3.Response;
  * Created by anmallya on 10/15/2016.
  */
 public class MovieArrayAdapter extends ArrayAdapter<Movie>{
-    ArrayList<Movie> movieList;
+    private ArrayList<Movie> movieList;
     private Context mContext;
 
     public MovieArrayAdapter(Context context, ArrayList<Movie> movieList)
@@ -53,6 +55,8 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
 
     @Override
     public int getViewTypeCount() {
+        // Currently hardcoded to 2.
+        // To-do: define an enum type for number of types of views and fetch its length
         return 2;
     }
 
@@ -106,7 +110,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
             ivImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    displayVideoOkHttp(((Movie)v.getTag()).getId());
+                    (new HttpHelper()).displayVideoOkHttp((MoviesActivity)getContext(),((Movie)v.getTag()).getId(), 0);
                 }
             });
 
@@ -148,68 +152,5 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie>{
             tvOverview.setText(movie.getOverview());
         }
         return convertView;
-    }
-
-
-    private void displayVideo(int id){
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(Url.getTrailerUrl(String.valueOf(id)), new JsonHttpResponseHandler(){
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                try {
-                    TrailerList trailerList = (new ObjectMapper()).readValue(response.toString(), TrailerList.class);
-                    Trailer trailer = trailerList.getResults().get(0);
-
-                    Intent intent = new Intent(getContext(), YoutubeActivity.class);
-                    intent.putExtra(Constants.YOUTUBE_VIDEO_KEY, trailer.getKey());
-                    getContext().startActivity(intent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-
-        });
-    }
-
-
-    private void displayVideoOkHttp(int id){
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(Url.getTrailerUrl(String.valueOf(id)))
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                    try {
-                        String responseData = response.body().string();
-                        JSONObject json = new JSONObject(responseData);
-
-                        TrailerList trailerList = (new ObjectMapper()).readValue(json.toString(), TrailerList.class);
-                        Trailer trailer = trailerList.getResults().get(0);
-
-                        Intent intent = new Intent(getContext(), YoutubeActivity.class);
-                        intent.putExtra(Constants.YOUTUBE_VIDEO_KEY, trailer.getKey());
-                        getContext().startActivity(intent);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 }

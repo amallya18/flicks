@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.codepath.anmallya.flicks.HttpHelper;
 import com.codepath.anmallya.flicks.R;
 import com.codepath.anmallya.flicks.model.Movie;
 import com.codepath.anmallya.flicks.model.Trailer;
@@ -55,6 +58,9 @@ public class DetailActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+
+        setStatusBarColor();
+
         final Movie movie = (Movie)getIntent().getSerializableExtra(Constants.MOVIE_INFO);
         int numberOfStars = ((int)(movie.getVoteAverage()/2) == 0)? 1: (int)(movie.getVoteAverage()/2);
 
@@ -72,77 +78,22 @@ public class DetailActivity extends AppCompatActivity  {
         ivBackDrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayVideoOkHttp(movie.getId(), 0);
+                (new HttpHelper()).displayVideoOkHttp(DetailActivity.this, movie.getId(), 0);
             }
         });
 
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayVideoOkHttp(movie.getId(), 1);
+                (new HttpHelper()).displayVideoOkHttp(DetailActivity.this, movie.getId(), 1);
             }
         });
     }
 
-    private void displayVideoOkHttp(int id, final int type){
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(Url.getTrailerUrl(String.valueOf(id)))
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                try {
-                    String responseData = response.body().string();
-                    JSONObject json = new JSONObject(responseData);
-
-                    TrailerList trailerList = (new ObjectMapper()).readValue(json.toString(), TrailerList.class);
-                    Trailer trailer = trailerList.getResults().get(type);
-
-                    Intent intent = new Intent(DetailActivity.this, YoutubeActivity.class);
-                    intent.putExtra(Constants.YOUTUBE_VIDEO_KEY, trailer.getKey());
-                    startActivity(intent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-
-    private void displayVideo(int id, final int type){
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(Url.getTrailerUrl(String.valueOf(id)), new JsonHttpResponseHandler(){
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                JSONArray TrailerArray = null;
-                try {
-                    TrailerList trailerList = (new ObjectMapper()).readValue(response.toString(), TrailerList.class);
-                    Trailer trailer = trailerList.getResults().get(type);
-                    Intent intent = new Intent(DetailActivity.this, YoutubeActivity.class);
-                    intent.putExtra(Constants.YOUTUBE_VIDEO_KEY, trailer.getKey());
-                    startActivity(intent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-
-        });
+    private void setStatusBarColor(){
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.black));
     }
 }
