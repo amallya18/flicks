@@ -44,7 +44,11 @@ Here's a walkthrough of implemented user stories:
 
 http://imgur.com/qyrFOnP
 
+Landscape Mode
 http://imgur.com/9QRgBAj
+
+Dropbox link
+https://www.dropbox.com/sh/61o23d56wxkjguj/AAAllX993SNaTOGP0xV9xuc3a?dl=0
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
