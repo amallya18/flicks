@@ -42,6 +42,8 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
+http://sendvid.com/t61kn7h7.mp4
+
 Dropbox link(gif+video)
 https://www.dropbox.com/sh/61o23d56wxkjguj/AAAllX993SNaTOGP0xV9xuc3a?dl=0
 
